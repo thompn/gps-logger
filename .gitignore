@@ -1,0 +1,11 @@
+*.json
+*.yaml
+*.csv
+*.ipynb
+venv/
+cache/
+.git/
+.idea/
+.ipynb_checkpoints/
+.env
+*.env

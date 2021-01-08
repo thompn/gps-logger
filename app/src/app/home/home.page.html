@@ -1,0 +1,30 @@
+<ion-app>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>GPS Trail Logger</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-segment>
+      <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnUpdateLocation(true)">Start </ion-segment-button>
+      <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnUpdateLocation(false)">Stop </ion-segment-button>
+    </ion-segment>
+    <div id="mapId" style="margin: auto; width: 95%; height: 50%"></div>
+    <ion-segment>
+    <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnPaved()">Paved</ion-segment-button>
+    <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnDirt()">Dirt</ion-segment-button>
+    <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnSand()">Sand</ion-segment-button>
+    <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnMud()">Mud</ion-segment-button>
+    </ion-segment>
+    <div class='bottom'>
+    <b>{{ surface }}</b>
+    </div>
+    <div class="coords">
+    {{ coords[0] }}<br>
+    {{ coords[1] }}
+    </div>
+    <div style="margin-top:10%;">
+    <center><ion-button color="medium">Upload Log</ion-button></center>
+    </div>
+  </ion-content>
+</ion-app>
