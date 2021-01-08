@@ -5,8 +5,7 @@ Simple GPS logging app with a backend which connects to a MySQL db.
 
 TODO
 
-- Dockerise RESTful API
+- Dockerise stuff
 - Integrate local storage to mobile app
-- Function to send local storage to RESTful API
-- Dockerise DB creation
+- Function to send app local storage to RESTful API on button press
 - Web front end
