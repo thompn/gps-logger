@@ -9,3 +9,4 @@ TODO
 - Integrate local storage to mobile app
 - Function to send local storage to RESTful API
 - Dockerise DB creation
+- Web front end
