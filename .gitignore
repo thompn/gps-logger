@@ -9,3 +9,5 @@ cache/
 .ipynb_checkpoints/
 .env
 *.env
+.*
+!.gitignore
