@@ -1,0 +1,22 @@
+version: "3"
+services:
+
+    mysql:
+      image: "mysql:latest"
+      container_name: gps-logger-mysql
+      volumes:
+        - logger-data:/var/lib/mysql/data
+      ports:
+        - 38493:3306
+      environment:
+        - MYSQL_DATABASE: 'db'
+        - MYSQL_USER: 'root'
+        - MYSQL_ROOT_PASSWORD: 'password'
+
+    api:
+      build: ./api
+      container_name: gps-logger-api
+      ports:
+        - 10000:10000
+      linkes:
+        - mysql
