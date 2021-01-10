@@ -9,7 +9,7 @@
       <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnUpdateLocation(true)">Start </ion-segment-button>
       <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnUpdateLocation(false)">Stop </ion-segment-button>
     </ion-segment>
-    <div id="mapId" style="margin: auto; width: 95%; height: 50%"></div>
+    <div id="mapId" style="margin: auto; width: 95%; height: 30%"></div>
     <ion-segment>
     <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnPaved()">Paved</ion-segment-button>
     <ion-segment-button style="margin-top:1%; font-size:25px" (click)="btnDirt()">Dirt</ion-segment-button>
@@ -23,8 +23,11 @@
     {{ coords[0] }}<br>
     {{ coords[1] }}
     </div>
+    <!-- 
     <div style="margin-top:10%;">
+    <center><ion-button color="success">Point of Interest</ion-button></center>
+    <br><br><br>
     <center><ion-button color="medium">Upload Log</ion-button></center>
-    </div>
+    </div> -->
   </ion-content>
 </ion-app>

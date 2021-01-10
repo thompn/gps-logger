@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, resolveForwardRef } from '@angular/core';
 import * as Leaflet from 'leaflet';
 import { ApiService } from '../services/api.service';
 import { AlertService } from '../services/alert.service';
@@ -18,7 +18,9 @@ export class HomePage {
   marker: any;
   subscription: Subscription;
   coords: any = [];
-  surface: any = "uknown";
+  surface: any = "unknown";
+  latitude : any;
+  longitude : any;
 
   constructor(
     private geolocation: Geolocation,
@@ -44,9 +46,12 @@ export class HomePage {
 
   btnUpdateLocation(tracking){
     if (tracking){
+      console.log('is tracking')
       this.subscription = this.geolocation.watchPosition().subscribe(async(response: any)=>{
+        console.log('getting gps coords');
         this.coords = [response.coords.latitude, response.coords.longitude];
-        this.api.updateDriverLocation(this.coords[0], this.coords[1], tracking, this.surface)
+        console.log('GOT gps');
+        this.api.updateDriverLocation(this.coords[0], this.coords[1], this.surface)
         .then(()=>{
           if (this.marker != null){
             this.map.removeLayer(this.marker);
@@ -54,16 +59,19 @@ export class HomePage {
           this.marker = Leaflet.marker(this.coords)
           .addTo(this.map).bindPopup('You are here.');
           this.map.setView(this.coords, 16);
-        }).catch(()=>{
+        }).catch((error)=>{
+          console.log(error);
           this.alert.presentCustomAlert("Error", "Check your internet connection.");
         });
       });
     }else{
+      console.log('is not tracking');
       this.subscription.unsubscribe();
-      this.api.updateDriverLocation(this.coords[0], this.coords[1], tracking, this.surface)
+      this.api.updateDriverLocation(this.coords[0], this.coords[1], this.surface)
       .then(()=>{
         this.alert.presentCustomAlert("Success", "Location paused.");
-      }).catch(()=>{
+      }).catch((error)=>{
+        console.log(error)
         this.alert.presentCustomAlert("Error", "Check your internet connection.");
       });
     }
@@ -71,20 +79,24 @@ export class HomePage {
 
 btnPaved(surface){
   this.surface = "paved"
+  this.btnUpdateLocation(true)
 
   }
 
 btnDirt(surface){
   this.surface = "dirt"
+  this.btnUpdateLocation(true)
 
 }
 
 btnSand(surface){
   this.surface = "sand"
+  this.btnUpdateLocation(true)
   }
 
 btnMud(surface){
   this.surface = "mud"
+  this.btnUpdateLocation(true)
 
 }
 }

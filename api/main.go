@@ -9,15 +9,16 @@ import (
 
     "github.com/joho/godotenv"
     "github.com/gorilla/mux"
+    "github.com/rs/cors"
     "github.com/jinzhu/gorm"
     _ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type Track struct {
   Timestamp string `json:"timestamp"`
-  Longitude string `json:"longitude"`
-  Latitude string `json:"latitude"`
-  Surface string `json:surface`
+  Longitude int32 `json:"longitude"`
+  Latitude int32 `json:"latitude"`
+  Surface string `json:"surface"`
 }
 
 type gpsTracks []Track
@@ -51,11 +52,21 @@ func initDB() {
 // Function to handle the page requests and route them
 func handleRequests() {
   myRouter := mux.NewRouter().StrictSlash(true)
-  myRouter.HandleFunc("/api/v1/", homePage).Methods("GET")
-  myRouter.HandleFunc("/api/v1/tracks", getTracks).Methods("GET")
-  myRouter.HandleFunc("/api/v1/tracks", newTrack).Methods("POST")
-  log.Fatal(http.ListenAndServe(":10000", myRouter))
+  myRouter.HandleFunc("/api/v1/", homePage).Methods("GET", "OPTIONS")
+  myRouter.HandleFunc("/api/v1/tracks", getTracks).Methods("GET", "OPTIONS")
+  myRouter.HandleFunc("/api/v1/tracks", newTrack).Methods("POST", "OPTIONS")
+  c := cors.New(cors.Options{
+    AllowedMethods: []string{"GET","POST", "OPTIONS"},
+    AllowedOrigins: []string{"*"},
+    AllowCredentials: true,
+    AllowedHeaders: []string{"Content-Type","Bearer","Bearer ","content-type","Origin","Accept"},
+    OptionsPassthrough: true,
+  })
+  handler := c.Handler(myRouter)
+  log.Fatal(http.ListenAndServe(":10000", handler))
 }
+
+
 
 // Function for main home page
 func homePage(w http.ResponseWriter, r *http.Request) {

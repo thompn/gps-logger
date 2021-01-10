@@ -5,10 +5,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
   providedIn: 'root'
 })
 export class ApiService {
-  private url: string = "https://api.sheetson.com/v2/sheets";
+  private url: string = "http://localhost:10000/api/v1/tracks"; //debugging locally - change to production server
   private headers: HttpHeaders = new HttpHeaders({
-    "X-Spreadsheet-Id": "1S6RM8eqqTn3BtZrEakTiytiNtnOoHs_cDON8-pjcwDc",
-    "Authorization": "Bearer " + "-XNfXq7b4foSx7oAo-3Ufq9p9NQRN9HQI9MGRzPBoClqRi4ytecLoFEd0wU",
     "Content-Type": "application/json"
   });
 
@@ -18,15 +16,21 @@ export class ApiService {
 
   }
 
-  async updateDriverLocation(latitude: number, longitude: number, tracking: boolean, surface: string): Promise<any> {
+  async updateDriverLocation(latitude: string, longitude: string, surface: string): Promise<any> {
+    console.log("recieved data", latitude, longitude)
     let body: any = {
       timestamp: new Date(),
       latitude: latitude,
       longitude: longitude,
-      tracking: tracking,
       surface: surface,
     };
-    return this.http.patch(`${this.url}/Location/2`, body, { headers: this.headers }).toPromise();
     console.log(body);
-  }
+    try {
+      return this.http.post(`${this.url}`, body, { responseType: 'text'}).toPromise();
+    }
+    catch(err) {
+      console.log(err.message)
+    }
+    
+    }
 }

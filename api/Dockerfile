@@ -3,4 +3,5 @@ RUN mkdir /api
 ADD . /api
 WORKDIR /api
 RUN go build -o main .
+COPY ./data/ /docker-entrypoint-initdb.d/
 CMD ["/app/main"]
