@@ -16,17 +16,16 @@ export class ApiService {
 
   }
 
-  async updateDriverLocation(latitude: string, longitude: string, surface: string): Promise<any> {
-    console.log("recieved data", latitude, longitude)
+  async updateDriverLocation(latitude: string, longitude: string, surface: string, tracking: string): Promise<any> {
     let body: any = {
-      timestamp: new Date(),
-      latitude: latitude,
-      longitude: longitude,
-      surface: surface,
+      "timestamp": new Date(),
+      "latitude": latitude.toString(),
+      "longitude": longitude.toString(),
+      "surface": surface,
+      "tracking": tracking,
     };
-    console.log(body);
     try {
-      return this.http.post(`${this.url}`, body, { responseType: 'text'}).toPromise();
+      return this.http.post(`${this.url}`, body, { headers: this.headers, responseType: 'text'}).toPromise();
     }
     catch(err) {
       console.log(err.message)

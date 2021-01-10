@@ -46,12 +46,10 @@ export class HomePage {
 
   btnUpdateLocation(tracking){
     if (tracking){
-      console.log('is tracking')
+      tracking = "start"
       this.subscription = this.geolocation.watchPosition().subscribe(async(response: any)=>{
-        console.log('getting gps coords');
         this.coords = [response.coords.latitude, response.coords.longitude];
-        console.log('GOT gps');
-        this.api.updateDriverLocation(this.coords[0], this.coords[1], this.surface)
+        this.api.updateDriverLocation(this.coords[0], this.coords[1], this.surface, tracking)
         .then(()=>{
           if (this.marker != null){
             this.map.removeLayer(this.marker);
@@ -65,9 +63,9 @@ export class HomePage {
         });
       });
     }else{
-      console.log('is not tracking');
+      tracking = "stop"
       this.subscription.unsubscribe();
-      this.api.updateDriverLocation(this.coords[0], this.coords[1], this.surface)
+      this.api.updateDriverLocation(this.coords[0], this.coords[1], this.surface, tracking)
       .then(()=>{
         this.alert.presentCustomAlert("Success", "Location paused.");
       }).catch((error)=>{

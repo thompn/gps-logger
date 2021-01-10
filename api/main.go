@@ -16,9 +16,10 @@ import (
 
 type Track struct {
   Timestamp string `json:"timestamp"`
-  Longitude int32 `json:"longitude"`
-  Latitude int32 `json:"latitude"`
+  Longitude string `json:"longitude"`
+  Latitude string `json:"latitude"`
   Surface string `json:"surface"`
+  Tracking string `json:"tracking"`
 }
 
 type gpsTracks []Track
@@ -71,7 +72,6 @@ func handleRequests() {
 // Function for main home page
 func homePage(w http.ResponseWriter, r *http.Request) {
   fmt.Fprintf(w, "Not Found!")
-  fmt.Println("Endpoint Hit: homepage")
 }
 
 // Function to get all tracks from database
@@ -85,8 +85,8 @@ func getTracks(w http.ResponseWriter, r *http.Request) {
 func newTrack(w http.ResponseWriter, r*http.Request) {
   var track Track
   json.NewDecoder(r.Body).Decode(&track)
+  fmt.Println(track)
   db.Create(&track)
-  //w.Header().set("Content-Type", "application/json")
   json.NewEncoder(w).Encode(track)
   fmt.Fprintf(w, "Added Track")
 }
