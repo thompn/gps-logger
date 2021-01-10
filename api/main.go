@@ -77,8 +77,8 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 // Function to get all tracks from database
 func getTracks(w http.ResponseWriter, r *http.Request) {
   var tracks []Track
-  db.Preload("gpsTracks").Find(&tracks)
-  json.NewEncoder(w).Encode(tracks)
+  result := db.Find(&tracks)
+  json.NewEncoder(w).Encode(result)
 }
 
 // Function to post a track to the database
