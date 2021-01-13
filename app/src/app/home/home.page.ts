@@ -1,7 +1,10 @@
 import { Component, resolveForwardRef } from '@angular/core';
+import { ToastController } from '@ionic/angular';
+
 import * as Leaflet from 'leaflet';
 import { ApiService } from '../services/api.service';
 import { AlertService } from '../services/alert.service';
+import { DatabaseService } from '../services/database.service';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Subscription } from 'rxjs';
@@ -15,6 +18,7 @@ import { Subscription } from 'rxjs';
 })
 
 export class HomePage {
+
   map: Leaflet.Map;
   marker: any;
   subscription: Subscription;
@@ -24,9 +28,11 @@ export class HomePage {
   longitude : any;
 
   constructor(
+    private db: DatabaseService,
     private geolocation: Geolocation,
     private api: ApiService,
-    private alert: AlertService
+    private alert: AlertService,
+    public toastController: ToastController
   ) { }
 
   private createMap(): void {
@@ -38,11 +44,23 @@ export class HomePage {
 
   ionViewDidEnter(): void {
     this.createMap();
-    console.log("loaded...")
+    this.db.getDatabaseState().subscribe(rdy => {
+      if (rdy) {
+        this.db.getDatabaseState().subscribe();
+      }
+    });
   }
 
   ionViewDidLeave(): void {
     this.map.remove();
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Point has been logged',
+      duration: 2000
+    });
+    toast.present();
   }
 
   btnUpdateLocation(tracking){
@@ -50,6 +68,8 @@ export class HomePage {
       tracking = "start"
       this.subscription = this.geolocation.watchPosition().subscribe(async(response: any)=>{
         this.coords = [response.coords.latitude, response.coords.longitude];
+        //this.db.addData(this.coords[0], this.coords[1], this.surface, tracking);
+        this.presentToast()
         this.api.updateDriverLocation(this.coords[0], this.coords[1], this.surface, tracking)
         .then(()=>{
           if (this.marker != null){
@@ -66,6 +86,8 @@ export class HomePage {
     }else{
       tracking = "stop"
       this.subscription.unsubscribe();
+      //this.db.addData(this.coords[0], this.coords[1], this.surface, tracking);
+      this.presentToast()
       this.api.updateDriverLocation(this.coords[0], this.coords[1], this.surface, tracking)
       .then(()=>{
         this.alert.presentCustomAlert("Success", "Location paused.");
