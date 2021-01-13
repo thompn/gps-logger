@@ -39,9 +39,13 @@ var cache store.Cache
 
 // Function to initialise the database connection
 func initDB() {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Println("warning .env file load error", err)
+	  }
 	creds := godotenv.Load(".env")
 	if creds != nil {
 		log.Fatalf("Error loading .env file")
+		fmt.Println(creds)
 	}
 
 	dbHost := os.Getenv("DB_HOST")
@@ -157,6 +161,7 @@ func newTrack(w http.ResponseWriter, r *http.Request) {
 
 // Main Function
 func main() {
+  fmt.Println("STARTING APP")
   initDB()
   setupGoGuardian()
   handleRequests()
