@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
   providedIn: 'root'
 })
 export class ApiService {
-  private url: string = "http://localhost:10000/api/v1/tracks"; //debugging locally - change to production server
+  private url: string = "http://212.47.247.115:10000/api/v1/tracks"; 
   private headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
